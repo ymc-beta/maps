@@ -14,36 +14,46 @@ body { margin: 0; padding: 0; }
   
 </head>
 <body>
+<h1>Hello</h1>
+<p>This is a map 2<p>
 
 <div id="map"></div>
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoieW1jLWJldGEiLCJhIjoiY2twaWkybXV2MDMzNzJ3bmk1MjF5MjNjciJ9.vfcKOVGs_l7c3YxBhD4P7Q';
+
 var map = new mapboxgl.Map({
-container: 'map',
-style: 'mapbox://styles/ymc-beta/cl1nsqbfe000u16lppufoqzcf',
-//  style: 'mapbox://styles/ymc-beta/cl1wco22x003n14p8whzghpt0',
+	container: 'map',
+	style: 'mapbox://styles/ymc-beta/cl1nsqbfe000u16lppufoqzcf',
+	//  style: 'mapbox://styles/mapbox/streets-v11'
+	center: [9.173006, 47.651459], // starting position Kreuzlingen [lng, lat]
+	pitch: 34,
+	bearing: 0,
+	zoom: 12 // starting zoom
+	});
+  
 
-  
-//  style: 'mapbox://styles/mapbox/streets-v11'
-  
-center: [9.173006, 47.651459], // starting position Kreuzlingen [lng, lat]
-pitch: 64,
-bearing: 0,
-zoom: 13.99 // starting zoom
-});
-  
-  function rotateCamera(timestamp) {
-// clamp the rotation between 0 -360 degrees
-// Divide timestamp by 100 to slow rotation to ~10 degrees / sec
-map.rotateTo((timestamp / 100) % 360, { duration: 0 });
-// Request the next frame of the animation.
-requestAnimationFrame(rotateCamera);
-}
-
-map.on('load', () => {
-// Start the animation.
-  rotateCamera(0);
+map.once('idle', () => {
+	map.flyTo({
+	// These options control the ending camera position: centered at
+	// the target, at zoom level 9, and north up.
+	center: [9.173006, 47.651459], // starting position Kreuzlingen 
+	zoom: 13.99,
+	bearing: 0,
+ 	pitch: 64,
+	// These options control the flight curve, making it move
+	// slowly and zoom out almost completely before starting
+	// to pan.
+	speed: 0.6, // make the flying slow
+	curve: 1, // change the speed at which it zooms out
+ 
+	// This can be any easing function: it takes a number between
+	// 0 and 1 and returns another number between 0 and 1.
+	//easing: (t) => t,
+ 
+	// this animation is considered essential with respect to prefers-reduced-motion
+	essential: true
+	});
  
 });
     
