@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Welcome</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.8.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.8.0/mapbox-gl.css' rel='stylesheet' />
+  
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+  
+</head>
+<body>
+<h1>Hello</h1>
+<p>This is a map 2<p>
+
+<div id="map"></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoieW1jLWJldGEiLCJhIjoiY2twaWkybXV2MDMzNzJ3bmk1MjF5MjNjciJ9.vfcKOVGs_l7c3YxBhD4P7Q';
+
+var map = new mapboxgl.Map({
+	container: 'map',
+	style: 'mapbox://styles/ymc-beta/cl1nsqbfe000u16lppufoqzcf',
+	//  style: 'mapbox://styles/mapbox/streets-v11'
+	center: [9.173006, 47.651459], // starting position Kreuzlingen [lng, lat]
+	pitch: 34,
+	bearing: 0,
+	zoom: 12 // starting zoom
+	});
+  
+
+map.once('idle', () => {
+	map.flyTo({
+	// These options control the ending camera position: centered at
+	// the target, at zoom level 9, and north up.
+	center: [9.173006, 47.651459], // starting position Kreuzlingen 
+	zoom: 13.99,
+	bearing: 0,
+ 	pitch: 64,
+	// These options control the flight curve, making it move
+	// slowly and zoom out almost completely before starting
+	// to pan.
+	speed: 0.6, // make the flying slow
+	curve: 1, // change the speed at which it zooms out
+ 
+	// This can be any easing function: it takes a number between
+	// 0 and 1 and returns another number between 0 and 1.
+	//easing: (t) => t,
+ 
+	// this animation is considered essential with respect to prefers-reduced-motion
+	essential: true
+	});
+ 
+});
+    
+</script>
+  
+</body>
+</html>
