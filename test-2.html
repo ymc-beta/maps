@@ -91,7 +91,7 @@
             // Add an image to use as a custom marker
             map.loadImage(
                 //'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
-				'https://ymc-beta-maps.vercel.app/building.png',
+				'https://ymc-beta-maps.vercel.app/building-sm.png',
                 (error, image) => {
                     if (error) throw error;
                     map.addImage('custom-marker', image);
@@ -182,7 +182,7 @@
                 }
             );
         });
-		
+
 		map.on('mouseenter', 'points', (e) => {
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
