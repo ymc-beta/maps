@@ -1,63 +1,216 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>Welcome</title>
-<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.8.0/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.8.0/mapbox-gl.css' rel='stylesheet' />
-  
-<style>
-body { margin: 0; padding: 0; }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
-</style>
-  
+	<meta charset="utf-8">
+	<title>Test 2</title>
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+	<script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+
+		#fly {
+			display: block;
+			position: relative;
+			margin: 0px auto;
+			width: 10%;
+			height: 40px;
+			padding: 10px;
+			border: none;
+			border-radius: 3px;
+			font-size: 12px;
+			text-align: center;
+			color: #fff;
+			background: #ee8a65;
+		}
+	</style>
+
 </head>
+
 <body>
-<h1>Hello</h1>
-<p>This is a map 2<p>
+	<h1>Hello</h1>
+	<p>This is a map 2
+	<p>
 
-<div id="map"></div>
+	<div id="map"></div>
+	<br>
+	<button id="fly">Go to Kreuzlingen</button>
 
-<script>
-mapboxgl.accessToken = 'pk.eyJ1IjoieW1jLW1hcHMtZGVtbyIsImEiOiJjbDdnYXVuNjgwMnI5M3ZuMWVxcWN5amZlIn0.bbtyZkukvhUYk5DUekWUkg';
+	<script>
+		mapboxgl.accessToken = 'pk.eyJ1IjoieW1jLW1hcHMtZGVtbyIsImEiOiJjbDdnYXVuNjgwMnI5M3ZuMWVxcWN5amZlIn0.bbtyZkukvhUYk5DUekWUkg';
 
-var map = new mapboxgl.Map({
-	container: 'map',
-	style: 'mapbox://styles/ymc-maps-demo/clcunojl2001j16qldl9tq5gt',
-	//  style: 'mapbox://styles/mapbox/streets-v11'
-	center: [9.173006, 47.651459], // starting position Kreuzlingen [lng, lat]
-	pitch: 34,
-	bearing: 0,
-	zoom: 12 // starting zoom
-	});
-  
+		var map = new mapboxgl.Map({
+			container: 'map',
+			style: 'mapbox://styles/ymc-maps-demo/clcunojl2001j16qldl9tq5gt',
+			//style: 'mapbox://styles/mapbox/streets-v12',
+			center: [9.173006, 47.651459], // starting position Kreuzlingen [lng, lat]
+			pitch: 34,
+			bearing: 0,
+			zoom: 12 // starting zoom
+		});
 
-map.once('idle', () => {
-	map.flyTo({
-	// These options control the ending camera position: centered at
-	// the target, at zoom level 9, and north up.
-	center: [9.173006, 47.651459], // starting position Kreuzlingen 
-	zoom: 13.99,
-	bearing: 0,
- 	pitch: 64,
-	// These options control the flight curve, making it move
-	// slowly and zoom out almost completely before starting
-	// to pan.
-	speed: 0.6, // make the flying slow
-	curve: 1, // change the speed at which it zooms out
- 
-	// This can be any easing function: it takes a number between
-	// 0 and 1 and returns another number between 0 and 1.
-	//easing: (t) => t,
- 
-	// this animation is considered essential with respect to prefers-reduced-motion
-	essential: true
-	});
- 
-});
-    
-</script>
-  
+		document.getElementById('fly').addEventListener('click', () => {
+
+			map.flyTo({
+
+				center: [9.173006, 47.651459], // starting position Kreuzlingen 
+				zoom: 13.99,
+				bearing: 0,
+				pitch: 64,
+				// These options control the flight curve, making it move
+				// slowly and zoom out almost completely before starting
+				// to pan.
+				speed: 0.6, //0.6, // make the flying slow
+				curve: 1, // change the speed at which it zooms out
+
+				// This can be any easing function: it takes a number between
+				// 0 and 1 and returns another number between 0 and 1.
+				// 	easing(t) {
+				// 		return t;
+				// 	}
+
+				// this animation is considered essential with respect to prefers-reduced-motion
+				essential: true
+			});
+		});
+
+		map.on('load', () => {
+            // Add an image to use as a custom marker
+            map.loadImage(
+                //'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+				'https://ymc-beta-maps.vercel.app/building.png',
+                (error, image) => {
+                    if (error) throw error;
+                    map.addImage('custom-marker', image);
+                    // Add a GeoJSON source POIs
+                    map.addSource('points', {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': [
+                                {
+                                    // feature
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': [9.181831170563242, 47.65045671546443]
+                                    },
+                                    'properties': {
+                                        'title': 'Spielplatz im Seeburgpark',
+                                        'description': '<strong>Im Seeburgpark Kreuzlingen gibt es für die Kinder alles was man zum Spass haben braucht.</strong><p>Der grösste Spielplatz der Stadt liegt im Seeburgpark am Kursschifffahrtshafen. Das vielseitige Angebot an Spielgeräten bildet zusammen mit der Minigolfanlage einen Anziehungspunkt für Jung und Alt. Hauptattraktion der Anlage ist das Spielschiff “Seeburgheuler”. Der Platz lockt aber auch mit diversen Rutschbahnen, Schaukeln, einer Seilbahn, einem Sandkasten, diversen Klettermöglichkeiten, Bocciabahn, Fussballwiese und einem kleinen Barfusspfad. </p><p>ÖFFNUNGSZEITEN<br>Der Park ist ganzjährig offen.</p>'
+                                    }
+                                },
+                                {
+                                    // feature
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': [9.197581303862478, 47.64679819761801]
+                                    },
+                                    'properties': {
+                                        'title': 'Spielplatz Bleiche',
+                                        'description': '<strong>Neben dem Campingplatz, in der Nähe des Yachthafens Seegarten, liegt der Spielplatz Bleiche. </strong><p> Der kleine Spielplatz ist etwas versteckt, der Zugang erfolgt über die Fischerhausstrasse. Von dieser zweigt ein Fussweg rechts ab zum Spielplatz. Rutsche, Schaukel und Sandplatz erfreuen vor allem kleinere Besucherinnen und Besucher. Gut beschatteter Platz, daher ideal bei heissen Temperaturen.</p>'
+                                    }
+                                },
+                                {
+                                    // feature
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': [9.155566099502579, 47.64693731768426]
+                                    },
+                                    'properties': {
+                                        'title': 'Spielplatz am Zeppelinring',
+                                        'description': '<strong>Schöner Quartierspielplatz auf grosszügiger Wiese an der Zepellinstrasse im Westen der Stadt.</strong><p>Nebst modernen Spielgeräten, einer Seilbahn, einem grossen Sandkasten mit Wasserspiel, Schaukeln, Rutschen, etc gibt es hier auch lauschige Picknick-Plätze.</p>'
+                                    }
+
+                                },
+                                {
+                                    // feature
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': [9.195469229983956, 47.64709562484296]
+                                    },
+                                    'properties': {
+                                        'title': 'Spielplatz am Yachthafen',
+                                        'description': '<strong>Kleiner, aber feiner Spielplatz direkt am Kreuzlinger Yachthafen mit Sicht auf den See.</strong><p>Auf dem Kiesplatz an der Promenade hat es eine Schaukel, eine Rutschbahn und Sitzgelegenheiten.</p>'
+                                    }
+
+                                }
+
+                            ] //end features
+                        }
+                    });
+
+                    // Add a symbol layer
+                    map.addLayer({
+                        'id': 'points',
+                        'type': 'symbol',
+                        'source': 'points',
+                        'layout': {
+                            'icon-image': 'custom-marker',
+                            // get the title name from the source's "title" property
+                            'text-field': ['get', 'title'],
+						    // 'text-font': [
+                            //     'Open Sans Semibold',
+                            //     'Arial Unicode MS Bold'
+                            // ],
+                            //'text-offset': [0, 2.0],
+                            // 'text-anchor': 'top'
+                            'text-variable-anchor': ['bottom', 'left', 'right'],
+                            'text-radial-offset': 2.0,
+                            'text-justify': 'auto'
+                        },
+                        'paint': {
+                            'text-color': '#000000'
+                        }
+                    });
+                }
+            );
+        });
+		
+		map.on('mouseenter', 'points', (e) => {
+            // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = 'pointer';
+
+        });
+
+        map.on('mouseleave', 'points', () => {
+            map.getCanvas().style.cursor = '';
+            popup.remove();
+        });
+
+        // When a click event occurs on a feature in the places layer, open a popup at the
+        // location of the feature, with description HTML from its properties.
+        map.on('click', 'points', (e) => {
+            // Copy coordinates array.
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            const description = e.features[0].properties.description;
+
+
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+        });
+
+	</script>
+
 </body>
+
 </html>
+
