@@ -54,7 +54,7 @@
 
 		var map = new mapboxgl.Map({
 			container: 'map',
-			style: 'mapbox://styles/ymc-maps-demo/clcunojl2001j16qldl9tq5gt',
+			style: 'mapbox://styles/ymc-maps-demo/cld39mwet000d01rp7j68noba',
 			//style: 'mapbox://styles/mapbox/streets-v12',
 			center: [9.173006, 47.651459], // starting position Kreuzlingen [lng, lat]
 			pitch: 34,
@@ -91,7 +91,7 @@
             // Add an image to use as a custom marker
             map.loadImage(
                 //'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
-				'https://ymc-beta-maps.vercel.app/building-sm.png',
+				'https://ymc-beta-maps.vercel.app/POI-2.png',
                 (error, image) => {
                     if (error) throw error;
                     map.addImage('custom-marker', image);
@@ -176,7 +176,10 @@
                             'text-justify': 'auto'
                         },
                         'paint': {
-                            'text-color': '#000000'
+                            'text-color': '#ffffff',
+							'text-halo-color': '#333333',
+							'text-halo-width': 2,
+							'text-halo-blur': 0.5
                         }
                     });
                 }
